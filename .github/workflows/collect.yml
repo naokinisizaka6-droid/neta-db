@@ -1,0 +1,43 @@
+name: Collect Videos
+
+on:
+  schedule:
+    # 毎日 08:00 UTC (日本時間 17:00) に実行
+    - cron: '0 8 * * *'
+  workflow_dispatch:
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r batch/requirements.txt
+
+      - name: Run video collection
+        env:
+          YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        run: python batch/collect.py
+
+      - name: Log completion
+        if: success()
+        run: echo "✅ Video collection completed successfully"
+
+      - name: Notify on failure
+        if: failure()
+        run: |
+          echo "❌ Video collection failed"
+          exit 1

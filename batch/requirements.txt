@@ -1,0 +1,22 @@
+# YouTube API
+google-api-python-client==1.12.5
+google-auth-oauthlib==1.2.1
+google-auth-httplib2==0.2.0
+
+# Claude API
+anthropic==0.42.0
+
+# Database
+psycopg2-binary==2.9.10
+python-dotenv==1.0.1
+
+# Utilities
+requests==2.32.3
+pydantic==2.10.3
+
+# Logging & monitoring
+python-logging-loki==0.3.2
+
+# Testing
+pytest==8.3.2
+pytest-asyncio==0.24.0
