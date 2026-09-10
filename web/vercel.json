@@ -1,0 +1,19 @@
+{
+  "name": "neta-db",
+  "version": 2,
+  "public": false,
+  "buildCommand": "npm run build",
+  "devCommand": "npm run dev",
+  "installCommand": "npm install",
+  "env": {
+    "NEXT_PUBLIC_SUPABASE_URL": "@supabase_url",
+    "NEXT_PUBLIC_SUPABASE_ANON_KEY": "@supabase_anon_key"
+  },
+  "envPrefix": "NEXT_PUBLIC_",
+  "regions": ["nrt1"],
+  "git": {
+    "deploymentEnabled": {
+      "main": true
+    }
+  }
+}
