@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 """
-ネタDB インタラクティブセットアップスクリプト
-ユーザーの入力に基づいて自動セットアップを進行
+Interactive setup script - configure API keys and environment
 """
 
 import os
@@ -27,7 +27,7 @@ class SetupWizard:
         print()
 
     def prompt(self, message, default="", required=False):
-        """ユーザーに入力を促す"""
+        """User input prompt"""
         while True:
             prompt_text = f"{message}"
             if default:
@@ -41,12 +41,12 @@ class SetupWizard:
             elif value:
                 return value
             elif required:
-                print("❌ この項目は必須です")
+                print("[REQUIRED] This field is mandatory")
             else:
                 return ""
 
     def prompt_yes_no(self, message, default=True):
-        """Yes/No 質問"""
+        """Yes/No question"""
         default_str = "Y/n" if default else "y/N"
         while True:
             response = input(f"{message} [{default_str}]: ").strip().lower()
@@ -57,100 +57,100 @@ class SetupWizard:
             elif response == "":
                 return default
             else:
-                print("y または n で答えてください")
+                print("Answer with y or n")
 
     def step_1_introduction(self):
-        """ステップ 1: イントロダクション"""
-        self.print_header("🎭 ネタDB インタラクティブセットアップ")
+        """Step 1: Introduction"""
+        self.print_header("NetalDB Interactive Setup")
 
-        print("このスクリプトでは、以下を自動化します：")
-        print("  ✅ 環境変数設定（.env）")
-        print("  ✅ Python 依存パッケージのインストール")
-        print("  ✅ Node.js 依存パッケージのインストール")
-        print("  ✅ 環境検証")
+        print("This script automates the following:")
+        print("  [OK] Environment configuration (.env)")
+        print("  [OK] Python package installation")
+        print("  [OK] Node.js package installation")
+        print("  [OK] Environment verification")
         print()
-        print("⚠️  事前に以下を準備してください：")
-        print("  1. Supabase プロジェクト作成済み")
-        print("  2. YouTube Data API キー取得済み")
-        print("  3. Claude API キー取得済み")
+        print("[WARNING] Please prepare the following in advance:")
+        print("  1. Supabase project created")
+        print("  2. YouTube Data API key obtained")
+        print("  3. Claude API key obtained")
         print()
 
-        if not self.prompt_yes_no("セットアップを開始しますか？"):
-            print("❌ セットアップをキャンセルしました")
+        if not self.prompt_yes_no("Start setup?"):
+            print("[ERROR] Setup cancelled")
             sys.exit(0)
 
     def step_2_api_keys(self):
-        """ステップ 2: API キーを入力"""
-        self.print_section("API キー設定")
+        """Step 2: API Keys input"""
+        self.print_section("API Keys Configuration")
 
-        print("📌 以下の情報を入力してください\n")
+        print("[PIN] Please enter the following information\n")
 
         # YouTube API Key
-        print("【YouTube Data API キー】")
-        print("  取得方法: Google Cloud Console → API → YouTube Data API v3")
+        print("[YouTube Data API Key]")
+        print("  How to get: Google Cloud Console -> API -> YouTube Data API v3")
         self.config["YOUTUBE_API_KEY"] = self.prompt(
-            "  API キーを入力",
+            "  Enter API key",
             required=True
         )
 
         # Claude API Key
-        print("\n【Claude API キー】")
-        print("  取得方法: https://console.anthropic.com → API Keys")
+        print("\n[Claude API Key]")
+        print("  How to get: https://console.anthropic.com -> API Keys")
         self.config["CLAUDE_API_KEY"] = self.prompt(
-            "  API キーを入力",
+            "  Enter API key",
             required=True
         )
 
         # Claude Model
         self.config["CLAUDE_MODEL"] = self.prompt(
-            "  使用モデル",
+            "  Model to use",
             default="claude-haiku-4-5-20251001"
         )
 
     def step_3_supabase(self):
-        """ステップ 3: Supabase 情報を入力"""
-        self.print_section("Supabase 設定")
+        """Step 3: Supabase information"""
+        self.print_section("Supabase Configuration")
 
-        print("📌 Supabase プロジェクト情報を入力してください\n")
+        print("[PIN] Please enter Supabase project information\n")
 
         # Supabase URL
-        print("【Supabase URL】")
-        print("  取得方法: Supabase Dashboard → Settings → API")
+        print("[Supabase URL]")
+        print("  How to get: Supabase Dashboard -> Settings -> API")
         self.config["SUPABASE_URL"] = self.prompt(
-            "  Supabase URL (例: https://xxx.supabase.co)",
+            "  Enter Supabase URL (example: https://xxx.supabase.co)",
             required=True
         )
 
         # Anon Key
-        print("\n【Anon Public キー】")
-        print("  取得方法: Supabase Dashboard → Settings → API → anon public")
+        print("\n[Anon Public Key]")
+        print("  How to get: Supabase Dashboard -> Settings -> API -> anon public")
         self.config["SUPABASE_ANON_KEY"] = self.prompt(
-            "  Anon キーを入力",
+            "  Enter Anon key",
             required=True
         )
 
         # Service Role Key
-        print("\n【Service Role Secret キー】")
-        print("  取得方法: Supabase Dashboard → Settings → API → service_role secret")
+        print("\n[Service Role Secret Key]")
+        print("  How to get: Supabase Dashboard -> Settings -> API -> service_role secret")
         self.config["SUPABASE_SERVICE_ROLE_KEY"] = self.prompt(
-            "  Service Role キーを入力",
+            "  Enter Service Role key",
             required=True
         )
 
         # Database URL
-        print("\n【Database Connection URL】")
-        print("  取得方法: Supabase Dashboard → Settings → Database → Connection Pooling")
-        print("  形式: postgresql://postgres:password@host:5432/postgres")
+        print("\n[Database Connection URL]")
+        print("  How to get: Supabase Dashboard -> Settings -> Database -> Connection Pooling")
+        print("  Format: postgresql://postgres:password@host:5432/postgres")
         self.config["DATABASE_URL"] = self.prompt(
-            "  接続文字列を入力",
+            "  Enter connection string",
             required=True
         )
 
     def step_4_create_env_files(self):
-        """ステップ 4: .env ファイルを作成"""
-        self.print_section("環境変数ファイル作成")
+        """Step 4: Create .env files"""
+        self.print_section("Environment Files Creation")
 
-        # ルート .env
+        # Root .env
         env_content = f"""# YouTube API
 YOUTUBE_API_KEY={self.config['YOUTUBE_API_KEY']}
 
@@ -171,25 +171,25 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY={self.config['SUPABASE_ANON_KEY']}
 
         with open(self.env_file, "w") as f:
             f.write(env_content)
-        print(f"✅ {self.env_file} を作成しました")
+        print(f"[OK] Created {self.env_file}")
 
         # web/.env
-        web_env_content = f"""# Supabase (公開用)
+        web_env_content = f"""# Supabase (public)
 NEXT_PUBLIC_SUPABASE_URL={self.config['SUPABASE_URL']}
 NEXT_PUBLIC_SUPABASE_ANON_KEY={self.config['SUPABASE_ANON_KEY']}
 """
 
         with open(self.web_env_file, "w") as f:
             f.write(web_env_content)
-        print(f"✅ {self.web_env_file} を作成しました")
+        print(f"[OK] Created {self.web_env_file}")
 
     def step_5_install_dependencies(self):
-        """ステップ 5: 依存パッケージをインストール"""
-        self.print_section("依存パッケージのインストール")
+        """Step 5: Install dependencies"""
+        self.print_section("Dependency Installation")
 
         # Python
-        if self.prompt_yes_no("Python パッケージをインストールしますか？"):
-            print("\n📦 Python パッケージをインストール中...")
+        if self.prompt_yes_no("Install Python packages?"):
+            print("\n[PACKAGE] Installing Python packages...")
             try:
                 subprocess.run(
                     [sys.executable, "-m", "pip", "install", "-q", "-r", "batch/requirements.txt"],
@@ -197,14 +197,14 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY={self.config['SUPABASE_ANON_KEY']}
                     check=True,
                     timeout=120
                 )
-                print("✅ Python パッケージをインストール完了")
+                print("[OK] Python packages installed")
             except Exception as e:
-                print(f"⚠️ Python インストール中にエラー: {e}")
-                print("   手動で実行: pip install -r batch/requirements.txt")
+                print(f"[WARNING] Error during Python installation: {e}")
+                print("   Manual: pip install -r batch/requirements.txt")
 
         # Node.js
-        if self.prompt_yes_no("Node.js パッケージをインストールしますか？"):
-            print("\n📦 Node.js パッケージをインストール中...")
+        if self.prompt_yes_no("Install Node.js packages?"):
+            print("\n[PACKAGE] Installing Node.js packages...")
             try:
                 subprocess.run(
                     ["npm", "install"],
@@ -212,17 +212,17 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY={self.config['SUPABASE_ANON_KEY']}
                     check=True,
                     timeout=300
                 )
-                print("✅ Node.js パッケージをインストール完了")
+                print("[OK] Node.js packages installed")
             except Exception as e:
-                print(f"⚠️ Node.js インストール中にエラー: {e}")
-                print("   手動で実行: cd web && npm install")
+                print(f"[WARNING] Error during Node.js installation: {e}")
+                print("   Manual: cd web && npm install")
 
     def step_6_verify_setup(self):
-        """ステップ 6: セットアップ検証"""
-        self.print_section("セットアップ検証")
+        """Step 6: Setup verification"""
+        self.print_section("Setup Verification")
 
-        if self.prompt_yes_no("検証スクリプトを実行しますか？"):
-            print("\n🔍 環境を検証中...\n")
+        if self.prompt_yes_no("Run verification script?"):
+            print("\n[SEARCH] Verifying environment...\n")
             try:
                 subprocess.run(
                     [sys.executable, "batch/test_setup.py"],
@@ -230,25 +230,25 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY={self.config['SUPABASE_ANON_KEY']}
                     timeout=30
                 )
             except Exception as e:
-                print(f"⚠️ 検証エラー: {e}")
+                print(f"[WARNING] Verification error: {e}")
 
     def step_7_github_setup(self):
-        """ステップ 7: GitHub セットアップ"""
-        self.print_section("GitHub セットアップ")
+        """Step 7: GitHub setup"""
+        self.print_section("GitHub Setup")
 
-        print("📌 GitHub にリポジトリを作成してください\n")
-        print("  1. https://github.com/new にアクセス")
+        print("[PIN] Please create repository on GitHub\n")
+        print("  1. Visit https://github.com/new")
         print("  2. Repository name: neta-db")
-        print("  3. Create repository ボタンを押す")
+        print("  3. Click Create repository button")
         print()
 
-        if self.prompt_yes_no("GitHub リポジトリを作成しましたか？"):
+        if self.prompt_yes_no("Have you created the GitHub repository?"):
             repo_url = self.prompt(
-                "  リポジトリ URL を入力 (例: https://github.com/username/neta-db.git)",
+                "  Enter repository URL (example: https://github.com/username/neta-db.git)",
                 required=True
             )
 
-            print("\n📤 リポジトリにプッシュ中...\n")
+            print("\n[UPLOAD] Pushing to repository...\n")
             try:
                 subprocess.run(
                     ["git", "remote", "add", "origin", repo_url],
@@ -256,7 +256,7 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY={self.config['SUPABASE_ANON_KEY']}
                     check=True
                 )
             except subprocess.CalledProcessError:
-                # すでに存在する場合
+                # Already exists
                 subprocess.run(
                     ["git", "remote", "remove", "origin"],
                     cwd=self.project_root
@@ -269,23 +269,23 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY={self.config['SUPABASE_ANON_KEY']}
 
             try:
                 subprocess.run(
-                    ["git", "push", "-u", "origin", "main"],
+                    ["git", "push", "-u", "origin", "master"],
                     cwd=self.project_root,
                     check=True,
                     timeout=60
                 )
-                print("✅ GitHub にプッシュしました")
+                print("[OK] Pushed to GitHub")
             except Exception as e:
-                print(f"⚠️ プッシュエラー: {e}")
-                print("   手動で実行: git push -u origin main")
+                print(f"[WARNING] Push error: {e}")
+                print("   Manual: git push -u origin master")
 
     def step_8_github_secrets(self):
-        """ステップ 8: GitHub Secrets 設定"""
-        self.print_section("GitHub Secrets 設定")
+        """Step 8: GitHub Secrets setup"""
+        self.print_section("GitHub Secrets Configuration")
 
-        print("📌 以下の手順で Secrets を設定してください\n")
-        print("  1. GitHub リポジトリ → Settings → Secrets and variables → Actions")
-        print("  2. 「New repository secret」で以下を追加：\n")
+        print("[PIN] Please set Secrets using the following steps\n")
+        print("  1. GitHub repository -> Settings -> Secrets and variables -> Actions")
+        print("  2. Add \"New repository secret\" with:\n")
 
         secrets = {
             "YOUTUBE_API_KEY": self.config["YOUTUBE_API_KEY"],
@@ -295,33 +295,33 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY={self.config['SUPABASE_ANON_KEY']}
 
         for secret_name, secret_value in secrets.items():
             masked_value = secret_value[:20] + "..." if len(secret_value) > 20 else secret_value
-            print(f"  • Name: {secret_name}")
+            print(f"  * Name: {secret_name}")
             print(f"    Value: {masked_value}")
             print()
 
-        print("✅ Secrets 設定完了後、GitHub Actions が自動実行されます")
+        print("[OK] After Secrets are configured, GitHub Actions will run automatically")
 
     def step_9_vercel_deployment(self):
-        """ステップ 9: Vercel デプロイ"""
-        self.print_section("Vercel デプロイ準備")
+        """Step 9: Vercel deployment"""
+        self.print_section("Vercel Deployment Preparation")
 
-        print("📌 以下の手順でデプロイしてください\n")
-        print("  1. https://vercel.com にアクセス")
-        print("  2. GitHub でサインアップ")
-        print("  3. 「Add New...」→ 「Project」")
-        print("  4. GitHub リポジトリ neta-db を選択")
+        print("[PIN] Please deploy using the following steps\n")
+        print("  1. Visit https://vercel.com")
+        print("  2. Sign up with GitHub")
+        print("  3. Click \"Add New...\" -> \"Project\"")
+        print("  4. Select GitHub repository neta-db")
         print("  5. Root Directory: web/")
-        print("  6. Environment Variables を設定：")
+        print("  6. Set Environment Variables:")
         print(f"     - NEXT_PUBLIC_SUPABASE_URL: {self.config['SUPABASE_URL']}")
         print(f"     - NEXT_PUBLIC_SUPABASE_ANON_KEY: {self.config['SUPABASE_ANON_KEY']}")
-        print("  7. Deploy ボタンを押す")
+        print("  7. Click Deploy button")
         print()
 
-        if self.prompt_yes_no("Vercel デプロイを完了しましたか？"):
-            print("✅ 公開サイトが利用可能になります")
+        if self.prompt_yes_no("Have you completed Vercel deployment?"):
+            print("[OK] Public site is now available")
 
     def run(self):
-        """セットアップ全体を実行"""
+        """Run entire setup"""
         try:
             self.step_1_introduction()
             self.step_2_api_keys()
@@ -333,22 +333,22 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY={self.config['SUPABASE_ANON_KEY']}
             self.step_8_github_secrets()
             self.step_9_vercel_deployment()
 
-            # 完了
-            self.print_header("🎉 セットアップ完了！")
-            print("ネタDB のセットアップがすべて完了しました！\n")
-            print("次のステップ：")
-            print("  📺 管理画面: streamlit run admin/app.py")
-            print("  🌐 公開サイト: cd web && npm run dev")
-            print("  🔄 バッチ処理: python batch/collect.py")
+            # Complete
+            self.print_header("Setup Complete!")
+            print("NetalDB setup is complete!\n")
+            print("Next steps:")
+            print("  Admin: streamlit run admin/app.py")
+            print("  Public: cd web && npm run dev")
+            print("  Batch: python batch/collect.py")
             print()
-            print("詳細は README.md または SETUP.md を参照してください")
+            print("See README.md or SETUP.md for details")
             print()
 
         except KeyboardInterrupt:
-            print("\n❌ セットアップをキャンセルしました")
+            print("\n[ERROR] Setup cancelled")
             sys.exit(1)
         except Exception as e:
-            print(f"\n❌ エラーが発生しました: {e}")
+            print(f"\n[ERROR] An error occurred: {e}")
             sys.exit(1)
 
 
