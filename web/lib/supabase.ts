@@ -77,6 +77,17 @@ export async function searchNetas(query: string, limit: number = 20) {
   return data
 }
 
+export async function getAllComedians() {
+  const { data, error } = await supabase
+    .from('comedians')
+    .select('*')
+    .eq('is_active', true)
+    .order('name')
+
+  if (error) throw error
+  return data as Comedian[]
+}
+
 export async function getComedianBySlug(slug: string) {
   const { data, error } = await supabase
     .from('comedians')
@@ -143,7 +154,7 @@ export async function getNetaById(id: number) {
     .single()
 
   if (error) throw error
-  return data
+  return data as any
 }
 
 export async function getTagNetas(slug: string, limit: number = 50) {
@@ -229,6 +240,28 @@ export async function getAllTags() {
   return data as Tag[]
 }
 
+export async function getContestBySlug(slug: string) {
+  const { data, error } = await supabase
+    .from('contests')
+    .select('*')
+    .eq('slug', slug)
+    .single()
+
+  if (error) throw error
+  return data as Contest
+}
+
+export async function getContestEditions(contestId: number) {
+  const { data, error } = await supabase
+    .from('contest_editions')
+    .select('id, year')
+    .eq('contest_id', contestId)
+    .order('year', { ascending: false })
+
+  if (error) throw error
+  return data as { id: number; year: number }[]
+}
+
 export async function getAllContests() {
   const { data, error } = await supabase
     .from('contests')
@@ -236,4 +269,12 @@ export async function getAllContests() {
 
   if (error) throw error
   return data as Contest[]
+}
+
+export async function createTakedownRequest(targetUrl: string, requester: string, reason: string) {
+  const { error } = await supabase
+    .from('takedown_requests')
+    .insert({ target_url: targetUrl, requester, reason })
+
+  if (error) throw error
 }
