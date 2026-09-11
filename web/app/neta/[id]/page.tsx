@@ -20,10 +20,10 @@ export default async function NetaDetailPage({
   const video = perf?.yt_videos
 
   return (
-    <div className="space-y-6 max-w-3xl">
+    <div className="space-y-8 max-w-2xl">
       <div>
-        <h1 className="text-3xl font-bold">{neta.title}</h1>
-        <p className="text-slate-600 dark:text-slate-400">
+        <h1 className="text-2xl font-bold tracking-wide">{neta.title}</h1>
+        <p className="text-sm text-neutral-500 mt-1">
           <a href={`/geinin/${neta.comedians?.slug}`} className="hover:underline">
             {neta.comedians?.name}
           </a>
@@ -33,9 +33,9 @@ export default async function NetaDetailPage({
       </div>
 
       {perf && (
-        <div className="aspect-video w-full">
+        <div className="aspect-video w-full bg-neutral-100">
           <iframe
-            className="w-full h-full rounded-lg"
+            className="w-full h-full"
             src={`https://www.youtube.com/embed/${perf.video_id}${perf.start_sec ? `?start=${perf.start_sec}` : ''}`}
             title={neta.title}
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -45,7 +45,7 @@ export default async function NetaDetailPage({
       )}
 
       {neta.setting_note && (
-        <p className="text-slate-700 dark:text-slate-300">{neta.setting_note}</p>
+        <p className="text-sm text-neutral-600">{neta.setting_note}</p>
       )}
 
       {neta.neta_work_tags && neta.neta_work_tags.length > 0 && (
@@ -56,7 +56,7 @@ export default async function NetaDetailPage({
               <a
                 key={i}
                 href={`/tag/${t.tags?.slug}`}
-                className="text-xs bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 px-2 py-1 rounded hover:underline"
+                className="text-xs border border-neutral-300 text-neutral-600 px-2 py-1 hover:border-black hover:text-black"
               >
                 {t.tags?.name}
               </a>
@@ -69,7 +69,7 @@ export default async function NetaDetailPage({
           href={`https://www.youtube.com/watch?v=${perf.video_id}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-block text-blue-600 hover:underline"
+          className="inline-block text-sm underline hover:text-neutral-500"
         >
           YouTubeで見る →
         </a>

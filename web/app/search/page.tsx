@@ -1,4 +1,5 @@
 import { searchNetas } from '@/lib/supabase'
+import NetaCard from '@/components/NetaCard'
 
 export default async function SearchPage({
   searchParams,
@@ -6,7 +7,7 @@ export default async function SearchPage({
   searchParams: { q?: string }
 }) {
   const query = searchParams.q || ''
-  let results = []
+  let results: any[] = []
   let error = null
 
   if (query.trim()) {
@@ -18,106 +19,56 @@ export default async function SearchPage({
   }
 
   return (
-    <div className="space-y-6">
-      {/* 検索フォーム */}
+    <div className="space-y-8">
       <div>
-        <form action="/search" method="get" className="flex gap-2">
+        <form action="/search" method="get" className="flex gap-2 max-w-xl">
           <input
             type="text"
             name="q"
             defaultValue={query}
             placeholder="芸人名、設定、タグで検索..."
-            className="flex-1 px-4 py-2 border rounded-lg bg-white dark:bg-slate-900 dark:border-slate-700"
+            className="flex-1 px-4 py-2.5 border border-neutral-300 focus:outline-none focus:border-black text-sm"
           />
           <button
             type="submit"
-            className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+            className="px-6 py-2.5 bg-black text-white text-sm tracking-wide hover:bg-neutral-800"
           >
             検索
           </button>
         </form>
       </div>
 
-      {/* 検索結果 */}
       {!query.trim() ? (
-        <div className="text-center text-slate-600 dark:text-slate-400 py-12">
+        <div className="text-center text-neutral-500 py-20 text-sm">
           <p>キーワードを入力して検索してください</p>
         </div>
       ) : error ? (
-        <div className="bg-red-50 dark:bg-red-950/20 text-red-600 dark:text-red-400 p-4 rounded-lg">
+        <div className="border border-red-200 bg-red-50 text-red-600 p-4 text-sm">
           {error}
         </div>
       ) : results.length === 0 ? (
-        <div className="text-center text-slate-600 dark:text-slate-400 py-12">
+        <div className="text-center text-neutral-500 py-20 text-sm">
           <p>「{query}」に該当するネタが見つかりません</p>
         </div>
       ) : (
         <div>
-          <h2 className="text-2xl font-bold mb-4">
-            検索結果 ({results.length} 件)
+          <h2 className="text-sm text-neutral-500 mb-6 tracking-wide">
+            検索結果 {results.length} 件
           </h2>
 
-          <div className="space-y-4">
-            {results.map((result: any, idx: number) => (
-              <div
-                key={idx}
-                className="p-4 border rounded-lg hover:shadow-lg transition-shadow dark:border-slate-700"
-              >
-                <div className="flex gap-4">
-                  {/* サムネイル */}
-                  {result.thumbnail_url && (
-                    <div className="flex-shrink-0 w-24 h-24">
-                      <img
-                        src={result.thumbnail_url}
-                        alt={result.title}
-                        className="w-full h-full object-cover rounded"
-                      />
-                    </div>
-                  )}
-
-                  {/* 情報 */}
-                  <div className="flex-1">
-                    <h3 className="font-bold text-lg mb-1">
-                      {result.neta_title || result.title}
-                    </h3>
-
-                    <p className="text-sm text-slate-600 dark:text-slate-400 mb-2">
-                      {result.comedian_name} • {result.format} • {result.duration_sec}秒
-                    </p>
-
-                    {result.tags && result.tags.length > 0 && (
-                      <div className="flex flex-wrap gap-2 mb-2">
-                        {result.tags.slice(0, 3).map((tag: string, i: number) => (
-                          <span
-                            key={i}
-                            className="text-xs bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 px-2 py-1 rounded"
-                          >
-                            {tag}
-                          </span>
-                        ))}
-                      </div>
-                    )}
-
-                    <div className="flex gap-2 text-sm">
-                      <a
-                        href={`/neta/${result.neta_id}`}
-                        className="text-blue-600 hover:underline"
-                      >
-                        詳細を見る
-                      </a>
-                      <span className="text-slate-400">•</span>
-                      <a
-                        href={result.youtube_url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-blue-600 hover:underline"
-                      >
-                        YouTubeで見る
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </div>
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-10">
+            {results.map((r: any) => (
+              <NetaCard
+                key={r.neta_id}
+                href={`/neta/${r.neta_id}`}
+                thumbnailUrl={r.thumbnail_url}
+                title={r.neta_title || r.title}
+                comedianName={r.comedian_name}
+                format={r.format}
+                durationSec={r.duration_sec}
+                tags={r.tags}
+                youtubeUrl={r.youtube_url}
+              />
             ))}
           </div>
         </div>

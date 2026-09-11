@@ -22,11 +22,11 @@ export default async function ContestEditionsPage({
   }
 
   return (
-    <div className="space-y-6">
-      <h1 className="text-3xl font-bold">🏆 {contest.name}</h1>
+    <div className="space-y-8">
+      <h1 className="text-2xl font-bold tracking-wide">{contest.name}</h1>
 
       {editions.length === 0 ? (
-        <div className="text-center text-slate-600 dark:text-slate-400 py-12">
+        <div className="text-center text-neutral-500 py-20 text-sm">
           <p>登録されている年度がまだありません</p>
         </div>
       ) : (
@@ -35,7 +35,7 @@ export default async function ContestEditionsPage({
             <Link
               key={ed.id}
               href={`/contest/${params.slug}/${ed.year}`}
-              className="px-6 py-3 border rounded-lg hover:border-blue-600 hover:text-blue-600 dark:border-slate-700"
+              className="px-6 py-3 border border-neutral-300 text-sm hover:border-black hover:bg-black hover:text-white transition-colors"
             >
               {ed.year}年
             </Link>

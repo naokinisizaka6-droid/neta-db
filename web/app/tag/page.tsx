@@ -30,22 +30,22 @@ export default async function TagListPage() {
   }, {})
 
   return (
-    <div className="space-y-6">
-      <h1 className="text-3xl font-bold">🏷️ 設定から探す</h1>
+    <div className="space-y-8">
+      <h1 className="text-2xl font-bold tracking-wide">設定から探す</h1>
 
       {error ? (
-        <div className="bg-red-50 dark:bg-red-950/20 text-red-600 dark:text-red-400 p-4 rounded-lg">
+        <div className="border border-red-200 bg-red-50 text-red-600 p-4 text-sm">
           {error}
         </div>
       ) : tags.length === 0 ? (
-        <div className="text-center text-slate-600 dark:text-slate-400 py-12">
+        <div className="text-center text-neutral-500 py-20 text-sm">
           <p>登録されているタグがまだありません</p>
         </div>
       ) : (
-        <div className="space-y-8">
+        <div className="space-y-10">
           {Object.entries(grouped).map(([category, list]) => (
             <div key={category}>
-              <h2 className="text-lg font-bold mb-3">
+              <h2 className="text-xs font-bold tracking-widest text-neutral-500 mb-4 uppercase">
                 {categoryLabel[category] || category}
               </h2>
               <div className="flex flex-wrap gap-2">
@@ -53,7 +53,7 @@ export default async function TagListPage() {
                   <Link
                     key={tag.id}
                     href={`/tag/${tag.slug}`}
-                    className="px-4 py-2 border rounded-lg hover:border-blue-600 hover:text-blue-600 dark:border-slate-700"
+                    className="px-4 py-2 border border-neutral-300 text-sm hover:border-black hover:bg-black hover:text-white transition-colors"
                   >
                     {tag.name}
                   </Link>

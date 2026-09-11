@@ -113,7 +113,8 @@ export async function getComedianNetas(comedianId: number) {
         start_sec,
         end_sec,
         review_status,
-        source
+        source,
+        yt_videos (thumbnail_url, duration_sec)
       ),
       neta_work_tags (
         tag_id,
@@ -176,7 +177,8 @@ export async function getTagNetas(slug: string, limit: number = 50) {
         id,
         title,
         format,
-        comedians (slug, name)
+        comedians (slug, name),
+        performances (video_id, yt_videos (thumbnail_url, duration_sec))
       )
     `)
     .eq('tag_id', tag.id)
@@ -220,7 +222,8 @@ export async function getContestNetas(slug: string, year: number) {
         neta_work_id,
         video_id,
         start_sec,
-        end_sec
+        end_sec,
+        yt_videos (thumbnail_url, duration_sec)
       )
     `)
     .eq('edition_id', edition.id)

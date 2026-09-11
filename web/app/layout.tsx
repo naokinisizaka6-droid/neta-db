@@ -1,5 +1,12 @@
 import type { Metadata } from 'next'
+import { Jost } from 'next/font/google'
 import './globals.css'
+
+const jost = Jost({
+  subsets: ['latin'],
+  weight: ['400', '500', '700'],
+  variable: '--font-jost',
+})
 
 export const metadata: Metadata = {
   title: 'ネタDB - YouTube 漫才・コント検索',
@@ -17,31 +24,37 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="ja">
-      <body className="bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-50">
-        <header className="border-b bg-white dark:bg-slate-900">
-          <div className="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
-            <a href="/" className="text-2xl font-bold">
-              🎭 ネタDB
+    <html lang="ja" className={jost.variable}>
+      <body className="bg-white text-neutral-900 font-sans">
+        <header className="border-b border-neutral-200 bg-white sticky top-0 z-10">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 py-5 flex justify-between items-center">
+            <a href="/" className="text-xl font-bold tracking-widest">
+              NETA DB
             </a>
-            <nav className="flex gap-6">
-              <a href="/search" className="hover:text-blue-600">
-                検索
+            <nav className="flex gap-6 sm:gap-8 text-xs sm:text-sm tracking-wider uppercase">
+              <a href="/geinin" className="hover:text-neutral-500">
+                芸人
               </a>
-              <a href="/about" className="hover:text-blue-600">
-                について
+              <a href="/tag" className="hover:text-neutral-500">
+                設定
+              </a>
+              <a href="/contest" className="hover:text-neutral-500">
+                賞レース
+              </a>
+              <a href="/search" className="hover:text-neutral-500">
+                検索
               </a>
             </nav>
           </div>
         </header>
 
-        <main className="max-w-6xl mx-auto px-4 py-8">
+        <main className="max-w-7xl mx-auto px-4 sm:px-6 py-10">
           {children}
         </main>
 
-        <footer className="border-t mt-12 py-6 text-center text-sm text-slate-600 dark:text-slate-400">
+        <footer className="border-t border-neutral-200 mt-16 py-8 text-center text-xs text-neutral-500 tracking-wide">
           <p>© 2024 ネタDB. All rights reserved.</p>
-          <p>
+          <p className="mt-2">
             <a href="/about" className="hover:underline">
               について
             </a>
