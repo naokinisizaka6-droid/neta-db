@@ -84,12 +84,23 @@ export async function searchNetas(query: string, limit: number = 20) {
 export async function getAllComedians() {
   const { data, error } = await supabase
     .from('comedians')
-    .select('*')
+    .select('*, neta_works!inner(performances!inner(review_status))')
     .eq('is_active', true)
+    .eq('neta_works.performances.review_status', 'approved')
     .order('name')
 
   if (error) throw error
-  return data as Comedian[]
+  // neta_works!inner の重複行を除去
+  const seen = new Set<number>()
+  const unique: Comedian[] = []
+  for (const row of data as any[]) {
+    if (!seen.has(row.id)) {
+      seen.add(row.id)
+      const { neta_works, ...comedian } = row
+      unique.push(comedian)
+    }
+  }
+  return unique
 }
 
 export async function getComedianBySlug(slug: string) {
@@ -111,7 +122,7 @@ export async function getComedianNetas(comedianId: number) {
       title,
       format,
       setting_note,
-      performances (
+      performances!inner (
         id,
         video_id,
         start_sec,
@@ -143,10 +154,11 @@ export async function getNetaById(id: number) {
       format,
       setting_note,
       comedians (id, slug, name),
-      performances (
+      performances!inner (
         video_id,
         start_sec,
         end_sec,
+        review_status,
         yt_videos (title, description, duration_sec, thumbnail_url)
       ),
       neta_work_tags (
@@ -156,6 +168,7 @@ export async function getNetaById(id: number) {
       )
     `)
     .eq('id', id)
+    .eq('performances.review_status', 'approved')
     .single()
 
   if (error) throw error
@@ -177,16 +190,17 @@ export async function getTagNetas(slug: string, limit: number = 50) {
       neta_work_id,
       status,
       confidence,
-      neta_works (
+      neta_works!inner (
         id,
         title,
         format,
         comedians (slug, name),
-        performances (video_id, yt_videos (thumbnail_url, duration_sec))
+        performances!inner (video_id, review_status, yt_videos (thumbnail_url, duration_sec))
       )
     `)
     .eq('tag_id', tag.id)
     .eq('status', 'approved')
+    .eq('neta_works.performances.review_status', 'approved')
     .order('confidence', { ascending: false })
     .limit(limit)
 
@@ -227,10 +241,12 @@ export async function getContestNetas(slug: string, year: number) {
         video_id,
         start_sec,
         end_sec,
+        review_status,
         yt_videos (thumbnail_url, duration_sec)
       )
     `)
     .eq('edition_id', edition.id)
+    .eq('performances.review_status', 'approved')
     .order('order_no', { ascending: true })
 
   if (error) throw error
