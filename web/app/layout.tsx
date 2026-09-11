@@ -8,6 +8,10 @@ const jost = Jost({
   variable: '--font-jost',
 })
 
+// DBの内容はバッチ収集(collect.py等)で随時更新されるため、
+// 全ページで再検証せず毎回最新データを取得する
+export const dynamic = 'force-dynamic'
+
 export const metadata: Metadata = {
   title: 'ネタDB - YouTube 漫才・コント検索',
   description: '公式チャンネルの漫才・コント動画から芸人・形式・設定・賞レースで検索できるデータベース',
