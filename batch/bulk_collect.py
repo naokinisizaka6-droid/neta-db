@@ -124,6 +124,11 @@ def get_videos_details(video_ids):
                 continue
             if st.get("privacyStatus") != "public":
                 continue
+            if duration_sec <= 60:
+                continue  # YouTube Shorts
+            title_lower = sn["title"].lower()
+            if "shorts" in title_lower or "#short" in title_lower:
+                continue  # YouTube Shorts
             thumb = sn["thumbnails"].get("high", sn["thumbnails"].get("default"))["url"]
             results.append(
                 {
