@@ -7,21 +7,20 @@ Each channel here is a dedicated official channel for exactly one comedy
 act, so every public/embeddable upload on the channel is treated as that
 act's neta content (no per-video attribution ambiguity).
 """
+import os
 import re
 import sys
 import time
 import psycopg2
 import urllib.request
 import json
+from pathlib import Path
+from dotenv import load_dotenv
 
-API_KEY = "***REMOVED_YOUTUBE_API_KEY***"
-DB_PARAMS = dict(
-    host="db.jooicdngkhrdmqkpiqci.supabase.co",
-    port=6543,
-    dbname="postgres",
-    user="postgres",
-    password="***REMOVED_DB_PASSWORD***",
-)
+load_dotenv(Path(__file__).resolve().parent.parent / ".env")
+
+API_KEY = os.environ["YOUTUBE_API_KEY"]
+DATABASE_URL = os.environ["DATABASE_URL"]
 
 # channel_id, comedian_slug, comedian_name, unit_type, format, max_videos
 CHANNELS = [
@@ -145,7 +144,7 @@ def get_videos_details(video_ids):
 
 
 def main():
-    conn = psycopg2.connect(**DB_PARAMS)
+    conn = psycopg2.connect(DATABASE_URL)
     conn.autocommit = True
     cur = conn.cursor()
 

@@ -14,18 +14,16 @@ import os
 import time
 import psycopg2
 import anthropic
+from pathlib import Path
+from dotenv import load_dotenv
+
+load_dotenv(Path(__file__).resolve().parent.parent / ".env")
 
 CLAUDE_API_KEY = os.environ["CLAUDE_API_KEY"]
 MODEL = "claude-haiku-4-5-20251001"
 PROMPT_VERSION = "classify_neta_v1"
 
-DB_PARAMS = dict(
-    host="db.jooicdngkhrdmqkpiqci.supabase.co",
-    port=6543,
-    dbname="postgres",
-    user="postgres",
-    password="***REMOVED_DB_PASSWORD***",
-)
+DATABASE_URL = os.environ["DATABASE_URL"]
 
 BATCH_SIZE = 25
 
@@ -85,7 +83,7 @@ def classify_batch(client, items):
 
 def main():
     client = anthropic.Anthropic(api_key=CLAUDE_API_KEY)
-    conn = psycopg2.connect(**DB_PARAMS)
+    conn = psycopg2.connect(DATABASE_URL)
     conn.autocommit = True
     cur = conn.cursor()
 
