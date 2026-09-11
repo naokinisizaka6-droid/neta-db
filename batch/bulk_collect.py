@@ -25,19 +25,37 @@ DB_PARAMS = dict(
 
 # channel_id, comedian_slug, comedian_name, unit_type, format, max_videos
 CHANNELS = [
-    ("UCyOJdwv5CrDMTSzGC71DaVA", "cotton", "コットン", "combi", "conte", 100),
-    ("UCTA3AFI43NQ5Y9e9pzLZ2-Q", "hanako", "ハナコ", "trio", "conte", 100),
-    ("UC9UI_fNxTbfEJImAg5Y7pOw", "rainbow", "レインボー", "combi", "conte", 100),
-    ("UC9Bnr-dzm6CvQJnI8qVMNlw", "bakusho-mondai", "爆笑問題", "combi", "conte", 100),
-    ("UCDmgvtV_dF-jdFmIcJYabLg", "nelsons", "ネルソンズ", "combi", "conte", 100),
+    ("UCyOJdwv5CrDMTSzGC71DaVA", "cotton", "コットン", "combi", "conte", 300),
+    ("UCTA3AFI43NQ5Y9e9pzLZ2-Q", "hanako", "ハナコ", "trio", "conte", 300),
+    ("UC9UI_fNxTbfEJImAg5Y7pOw", "rainbow", "レインボー", "combi", "conte", 300),
+    ("UC9Bnr-dzm6CvQJnI8qVMNlw", "bakusho-mondai", "爆笑問題", "combi", "conte", 300),
+    ("UCDmgvtV_dF-jdFmIcJYabLg", "nelsons", "ネルソンズ", "combi", "conte", 300),
     ("UCM5TUWTwC4i9IIiBCGpN25w", "knights", "ナイツ", "combi", "manzai", 100),
-    ("UCRaaCxSF8nEpfG3ZHesXKxw", "gerardon", "ジェラードン", "trio", "conte", 100),
+    ("UCRaaCxSF8nEpfG3ZHesXKxw", "gerardon", "ジェラードン", "trio", "conte", 300),
     ("UCkBhsreS_wIyoL_7hqNVRWg", "baiking", "バイきんぐ", "combi", "conte", 100),
-    ("UCS9TpP7vSsk3ka0muNgl05w", "tensai-pianist", "天才ピアニスト", "combi", "conte", 100),
-    ("UCOg6P-Ne5Hdd5tDtcOHDd-Q", "nakagawake", "中川家", "combi", "manzai", 100),
+    ("UCS9TpP7vSsk3ka0muNgl05w", "tensai-pianist", "天才ピアニスト", "combi", "conte", 300),
+    ("UCOg6P-Ne5Hdd5tDtcOHDd-Q", "nakagawake", "中川家", "combi", "manzai", 300),
     ("UCqQR8xA6buvf6dHJhsGwH_Q", "miki", "ミキ", "combi", "manzai", 100),
-    ("UCuWdyc0Mp7zRZd6KSPguCsA", "land", "ラランド", "combi", "conte", 100),
+    ("UCuWdyc0Mp7zRZd6KSPguCsA", "land", "ラランド", "combi", "conte", 300),
     ("UC7KdT8g_21PNkt6AZIO86WQ", "battles", "バッテリィズ", "combi", "manzai", 100),
+    ("UClttgkLnnGDILHNrSkY5A-w", "diamond", "ダイヤモンド", "combi", "conte", 300),
+    ("UCj6LDjEmXxeFhSmmcYblGmQ", "torosalmon", "とろサーモン", "combi", "conte", 300),
+    ("UClVzR35NB31M0lupXJ4dpfQ", "punk-booboo", "パンクブーブー", "combi", "manzai", 300),
+    ("UCWpDV9u0M6H1Lu0AgdUU3Iw", "diane", "ダイアン", "combi", "conte", 300),
+    ("UC4bVLuPxbvIz9fuzru97KHw", "wagaya", "我が家", "combi", "conte", 300),
+    ("UCNvcNd31bA-XERO6LGy4blw", "saraba-seishun", "さらば青春の光", "combi", "conte", 300),
+    ("UCjJhVH1IT11tWnKTYp8jlRQ", "nagareboshi", "流れ星", "combi", "conte", 300),
+    ("UCNKU6ZxHDLgzTgiz0Wnek-Q", "tokyo-hoteison", "東京ホテイソン", "combi", "conte", 300),
+    ("UCS17iKEInkBuHkxtEcCnTTQ", "new-york", "ニューヨーク", "combi", "conte", 300),
+    ("UCEz6Z7EgtSi-rPes-SIKJEg", "reiwa-roman", "令和ロマン", "combi", "manzai", 300),
+    ("UCDishZFfEEFw_TRee8w4WRg", "kyu", "キュウ", "combi", "conte", 300),
+    ("UC910qpzjNM0l5a7OyTskkKw", "a-masso", "Aマッソ", "combi", "conte", 300),
+    ("UC4y-_Xwudf7gB5sXsbipDkQ", "don-decorte", "ドンデコルテ", "combi", "conte", 300),
+    ("UCIR2mQ77wHrLMreV45nYhgw", "kamaitachi", "かまいたち", "combi", "manzai", 300),
+    ("UCJcyQ-N0sbvwjYpDNXP9tsw", "non-style", "NON STYLE", "combi", "manzai", 300),
+    ("UCw2AIP_0OmgYqgAJU1jOH-g", "zophy", "ゾフィー", "combi", "conte", 300),
+    ("UCCBz0umWMLaxtYxx8fMJOKw", "rice", "ライス", "combi", "conte", 300),
+    ("UCsvQg7ihb2U10RBNNKK6ZPw", "yarenz", "ヤーレンズ", "combi", "conte", 300),
 ]
 
 EXISTING_SLUGS = {"rainbow"}  # already seeded via King of Conte batch
@@ -76,7 +94,9 @@ def get_playlist_video_ids(playlist_id, max_videos):
 
 
 def iso8601_to_sec(dur):
-    m = re.match(r"PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?", dur)
+    m = re.match(r"PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?", dur or "")
+    if not m or not any(m.groups()):
+        return None
     h, mnt, s = (int(x) if x else 0 for x in m.groups())
     return h * 3600 + mnt * 60 + s
 
@@ -97,6 +117,9 @@ def get_videos_details(video_ids):
             stat = item.get("statistics", {})
             if "duration" not in cd:
                 continue  # live broadcast / premiere without standard duration
+            duration_sec = iso8601_to_sec(cd["duration"])
+            if duration_sec is None:
+                continue  # unparseable duration format
             if not st.get("embeddable", True):
                 continue
             if st.get("privacyStatus") != "public":
@@ -108,7 +131,7 @@ def get_videos_details(video_ids):
                     "title": sn["title"],
                     "description": (sn.get("description") or "")[:500],
                     "published_at": sn["publishedAt"],
-                    "duration_sec": iso8601_to_sec(cd["duration"]),
+                    "duration_sec": duration_sec,
                     "thumbnail_url": thumb,
                     "view_count": int(stat.get("viewCount", 0)),
                 }
