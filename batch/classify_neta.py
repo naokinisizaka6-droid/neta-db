@@ -94,6 +94,7 @@ def main():
         join neta_works nw on nw.id = p.neta_work_id
         left join yt_videos yv on yv.video_id = p.video_id
         where p.review_status = 'approved'
+          and not exists (select 1 from llm_classifications lc where lc.video_id = p.video_id)
         order by p.id
         """
     )
